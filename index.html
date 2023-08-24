@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!--adiciona a lib vjs para a página-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <btnc></btnc>
+      <br />
+      <ifc></ifc>
+      <br />
+      <imc max="4"></imc>
+      <br />
+      <mchar></mchar>
+    </div>
+    <script>
+      const botaoconta = {
+        template: `<button v-on:click="count++">Você clicou em mim {{ count }} vezes.</button>`,
+        data: () => ({ count: 0 }),
+      };
+
+      /**
+       * declara um componente que forma a cor
+       * do texto digitado de acordo com a
+       * quantidade de caracteres
+       * */
+      const inputformatacor = {
+        template: `<input type="text" v-on:keyup="contachar">`,
+        data: () => ({ contchar: 0 }),
+        methods: {
+          contachar: function () {
+            //acessa o dado contchar
+            //acessa também o elemento do componente dado pelo seu template
+            this.contchar = this.$el.value.length;
+            if (this.contchar < 5) {
+              this.$el.style.color = "#000000";
+            } else if (this.contchar < 10) {
+              this.$el.style.color = "#ff0000";
+            } else {
+              this.$el.style.color = "#0000ff";
+            }
+          },
+        },
+      };
+      /**
+       * declara um componente capaz de receber um atributo chamado 'max'
+       * que representa a quantidade máxima de caracteres que podem ser digitados
+       * */
+      const inputmaxchar = {
+        //declaração das propriedades do componente
+        props: ["max"],
+        data: () => ({ contchar: 0 }),
+        methods: {
+          contachar: function () {
+            this.contchar = this.$el.value.length;
+            //verifica a quantidade máxima de caracteres e impede a digitação de mais
+            if (this.contchar >= this.max) {
+              this.$el.value = this.$el.value.substring(0, this.max - 1);
+            }
+          },
+        },
+        template: `<input type="text" v-on:keypress="contachar">`,
+      };
+
+      /**
+       * declara um componente que renderiza uma textarea
+       * e mostra ao lado a quantidade de caracteres que foram digitados
+       * */
+      const mostrachar = {
+        data: () => ({ contchar: 0 }),
+        methods: {
+          //função para atualizar a quantidade de caracteres digitados
+          contachar: function () {
+            //pesquise em https://www.w3schools.com/jsref/prop_node_childnodes.asp
+            this.contchar = this.$el.childNodes[0].value.length;
+          },
+        },
+        template: `<p><textarea v-on:keyup="contachar"></textarea> {{contchar}} caracteres</p>`,
+      };
+
+      const app = Vue.createApp({});
+      app.component("btnc", botaoconta);
+      app.component("ifc", inputformatacor);
+      app.component("imc", inputmaxchar);
+      app.component("mchar", mostrachar);
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
