@@ -4,24 +4,81 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Página 2</title>
     <!--adiciona a lib vjs para a página-->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.css"
+      rel="stylesheet"
+    />
+    <!-- MDB -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
+    ></script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .spinner-parent {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 1000;
+        background-color: aliceblue;
+      }
+      .spinner-parent .spinner-border {
+        position: relative;
+        width: 32px;
+        left: calc(50% - 16px);
+        top: calc(50% - 16px);
+      }
+    </style>
   </head>
   <body>
     <div id="app">
-      <nav><a href="index.html">Index</a></nav>
-      <btnc></btnc>
-      <br />
-      <ifc></ifc>
-      <br />
-      <imc max="4"></imc>
-      <br />
-      <mchar></mchar>
+      <div class="spinner-parent" v-show="mostraload">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div id="navbar"></div>
+      <div class="container px-4">
+        <div class="row p-3">
+          <div class="col-md">
+            <btnc></btnc>
+          </div>
+          <div class="col-md">
+            <ifc></ifc>
+          </div>
+          <div class="col-md">
+            <imc max="4"></imc>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mchar></mchar>
+          </div>
+        </div>
+      </div>
     </div>
     <script>
       const botaoconta = {
-        template: `<button v-on:click="count++">Você clicou em mim {{ count }} vezes.</button>`,
+        template: `<button class="btn btn-primary" v-on:click="count++">Você clicou em mim {{ count }} vezes.</button>`,
         data: () => ({ count: 0 }),
       };
 
@@ -31,7 +88,7 @@
        * quantidade de caracteres
        * */
       const inputformatacor = {
-        template: `<input type="text" v-on:keyup="contachar">`,
+        template: `<input class="form-control" type="text" v-on:keyup="contachar">`,
         data: () => ({ contchar: 0 }),
         methods: {
           contachar: function () {
@@ -65,7 +122,7 @@
             }
           },
         },
-        template: `<input type="text" v-on:keypress="contachar">`,
+        template: `<input class="form-control" type="text" v-on:keypress="contachar">`,
       };
 
       /**
@@ -81,10 +138,23 @@
             this.contchar = this.$el.childNodes[0].value.length;
           },
         },
-        template: `<p><textarea v-on:keyup="contachar"></textarea> {{contchar}} caracteres</p>`,
+        template: `<p><textarea class="form-control" v-on:keyup="contachar"></textarea> {{contchar}} caracteres</p>`,
       };
 
-      const app = Vue.createApp({});
+      const app = Vue.createApp({
+        data() {
+          return {
+            mostraload: true,
+          };
+        },
+        mounted() {
+          let _this = this;
+          $("#navbar").load("navbar.html", (r) => {
+            console.log(r);
+            _this.mostraload = false;
+          });
+        },
+      });
       app.component("btnc", botaoconta);
       app.component("ifc", inputformatacor);
       app.component("imc", inputmaxchar);
