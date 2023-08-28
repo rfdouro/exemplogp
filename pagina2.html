@@ -59,88 +59,36 @@
       <div id="navbar"></div>
       <div class="container px-4">
         <div class="row p-3">
-          <div class="col-md">
-            <btnc></btnc>
-          </div>
-          <div class="col-md">
-            <ifc></ifc>
-          </div>
-          <div class="col-md">
-            <imc max="4"></imc>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mchar></mchar>
+          <div class="col-4 offset-4">
+            <div class="card">
+              <div
+                class="bg-image hover-overlay ripple"
+                data-mdb-ripple-color="light"
+              >
+                <img
+                  src="https://avatars.githubusercontent.com/u/28950782?s=400&u=9bd8d0b14082b0e58a0b45dc26b9f6a252831690&v=4"
+                  class="img-fluid"
+                />
+                <a href="#!">
+                  <div
+                    class="mask"
+                    style="background-color: rgba(251, 251, 251, 0.15)"
+                  ></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Eu aqui</h5>
+                <p class="card-text">
+                  Essa é uma página de exemplo!
+                </p>
+                <a href="#!" class="btn btn-primary">Ok</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <script>
-      const botaoconta = {
-        template: `<button class="btn btn-primary" v-on:click="count++">Você clicou em mim {{ count }} vezes.</button>`,
-        data: () => ({ count: 0 }),
-      };
-
-      /**
-       * declara um componente que forma a cor
-       * do texto digitado de acordo com a
-       * quantidade de caracteres
-       * */
-      const inputformatacor = {
-        template: `<input class="form-control" type="text" v-on:keyup="contachar">`,
-        data: () => ({ contchar: 0 }),
-        methods: {
-          contachar: function () {
-            //acessa o dado contchar
-            //acessa também o elemento do componente dado pelo seu template
-            this.contchar = this.$el.value.length;
-            if (this.contchar < 5) {
-              this.$el.style.color = "#000000";
-            } else if (this.contchar < 10) {
-              this.$el.style.color = "#ff0000";
-            } else {
-              this.$el.style.color = "#0000ff";
-            }
-          },
-        },
-      };
-      /**
-       * declara um componente capaz de receber um atributo chamado 'max'
-       * que representa a quantidade máxima de caracteres que podem ser digitados
-       * */
-      const inputmaxchar = {
-        //declaração das propriedades do componente
-        props: ["max"],
-        data: () => ({ contchar: 0 }),
-        methods: {
-          contachar: function () {
-            this.contchar = this.$el.value.length;
-            //verifica a quantidade máxima de caracteres e impede a digitação de mais
-            if (this.contchar >= this.max) {
-              this.$el.value = this.$el.value.substring(0, this.max - 1);
-            }
-          },
-        },
-        template: `<input class="form-control" type="text" v-on:keypress="contachar">`,
-      };
-
-      /**
-       * declara um componente que renderiza uma textarea
-       * e mostra ao lado a quantidade de caracteres que foram digitados
-       * */
-      const mostrachar = {
-        data: () => ({ contchar: 0 }),
-        methods: {
-          //função para atualizar a quantidade de caracteres digitados
-          contachar: function () {
-            //pesquise em https://www.w3schools.com/jsref/prop_node_childnodes.asp
-            this.contchar = this.$el.childNodes[0].value.length;
-          },
-        },
-        template: `<p><textarea class="form-control" v-on:keyup="contachar"></textarea> {{contchar}} caracteres</p>`,
-      };
-
       const app = Vue.createApp({
         data() {
           return {
@@ -155,10 +103,6 @@
           });
         },
       });
-      app.component("btnc", botaoconta);
-      app.component("ifc", inputformatacor);
-      app.component("imc", inputmaxchar);
-      app.component("mchar", mostrachar);
 
       app.mount("#app");
     </script>
